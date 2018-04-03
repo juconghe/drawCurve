@@ -274,12 +274,18 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
 
         Matrix4f basisMatrix = new Matrix4f(1, 4, 1, 0, -3, 0, 3, 0, 3, -6, 3, 0, -1, 3, -3, 1);
         basisMatrix.mul(1.0f / 6.0f);
+        ArrayList<Point2f> newControlPoints = new ArrayList<Point2f>();
+        newControlPoints = (ArrayList<Point2f>)control_pts.clone();
         int npts = control_pts.size();
         int point_index = 0;
         if (npts < 4)
             return;
         curve_pts.clear();
-        System.out.println("Generating cubic Bezier points");
+        if (close_curve) {
+            newControlPoints.addAll(control_pts);
+        }
+        npts = newControlPoints.size();
+        System.out.println("Generating cubic Bspline points");
         while (point_index < npts - 3) {
             for (float u = 0; u <= 1; u += 1.0f / nsegment) {
                 Point2f q = new Point2f();
@@ -287,8 +293,8 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
                     Vector4f temp = new Vector4f();
                     basisMatrix.getColumn(i, temp);
                     float b_i = (new Vector4f(1, u, u * u, u * u * u)).dot(temp);
-                    q.x += b_i * control_pts.get(point_index + i).x;
-                    q.y += b_i * control_pts.get(point_index + i).y;
+                    q.x += b_i * newControlPoints.get(point_index + i).x;
+                    q.y += b_i * newControlPoints.get(point_index + i).y;
                 }
                 curve_pts.add(q);
             }
