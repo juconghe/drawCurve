@@ -104,7 +104,7 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
             control_pts.add(new Point2f(x, y));
         }
         System.out.println("Read " + control_pts.size()
-            + " points from file " + filename);
+                + " points from file " + filename);
         scanner.close();
     }
 
@@ -153,7 +153,7 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
         super("Assignment 4 -- Curve Generator");
         final GLProfile glprofile = GLProfile.getMaxFixedFunc(true);
         GLCapabilities glcapabilities = new GLCapabilities(glprofile);
-        canvas = new GLCanvas(glcapabilities);        
+        canvas = new GLCanvas(glcapabilities);
         canvas.setSurfaceScale(new float[]{ScalableSurface.IDENTITY_PIXELSCALE, ScalableSurface.IDENTITY_PIXELSCALE}); // potential fix for Retina Displays		
         canvas.addGLEventListener(this);
         canvas.addKeyListener(this);
@@ -170,21 +170,21 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
         }
     }
 
-    private void drawQuadraticInterp() 
+    private void drawQuadraticInterp()
     {
-	// ***** YOUR WORK HERE *****
+        // ***** YOUR WORK HERE *****
         /* computes and draws piecewise quadratic polynomial curves
          * each piece of the curve is approximated by nsegment line segments,
          * these line segments should be drawn to screen by calling drawLine
-         * 
+         *
          * remember that you also have to store your generated curve points
          * in the 'curve_pts' array, so that the curve can be saved to a disk file later
-         * 
+         *
          * if there are less than 3 interpolating points, return immediately
          */
         Matrix3f basisMatrix = new Matrix3f(1, 0, 0, -3, 4, -1, 2, -4, 2);
-		int npts = control_pts.size();
-		int point_index = 0;
+        int npts = control_pts.size();
+        int point_index = 0;
         if (npts < 3)
             return;
         curve_pts.clear();
@@ -205,22 +205,22 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
         }
         System.out.println("Drawing curve");
         for (int i = 0; i < curve_pts.size() - 1; i ++) {
-                Point2f tempPoint1 = curve_pts.get(i);
-                Point2f tempPoint2 = curve_pts.get(i+1);
-                drawLine(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, 0,1,0);
+            Point2f tempPoint1 = curve_pts.get(i);
+            Point2f tempPoint2 = curve_pts.get(i+1);
+            drawLine(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, 0,1,0);
         }
 
     }
 
     private void drawCubicBezier() {
-	// ***** YOUR WORK HERE *****
-	/* computes and draws piecewise cubic Bezier curves
+        // ***** YOUR WORK HERE *****
+        /* computes and draws piecewise cubic Bezier curves
          * each *piece* of the curve is approximated by nsegment line segments,
          * these line segments should be drawn to screen by calling drawLine
-         * 
+         *
          * remember that you also have to store your generated curve points
          * in the 'curve_pts' array, so that the curve can be saved to a disk file later
-         * 
+         *
          * if there are less than 4 control points, return immediately
          */
 
@@ -259,16 +259,16 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
          * each *piece* of the curve (computed from four neighboring control points)
          * is approximated by nsegment line segments.
          * these line segments are then drawn to screen by calling drawLine
-         * 		 
+         *
          * note that if boolean variable close_curve is true,
          * you should produce a closed piecewise Bspline curve
          *
-		 * remember that the curve should always start from the first point and 
-		 * end at the last point 
-		 *
+         * remember that the curve should always start from the first point and
+         * end at the last point
+         *
          * remember that you also have to store your generated curve points
          * in the curve_pts array, so that the curve can be saved to a disk file later
-         * 
+         *
          * if there are less than 4 control points, return immediately
          */
 
@@ -282,7 +282,10 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
             return;
         curve_pts.clear();
         if (close_curve) {
-            newControlPoints.addAll(control_pts);
+            newControlPoints.add(control_pts.get(0));
+            newControlPoints.add(control_pts.get(1));
+            newControlPoints.add(control_pts.get(2));
+
         }
         npts = newControlPoints.size();
         System.out.println("Generating cubic Bspline points");
@@ -406,7 +409,7 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
             case KeyEvent.VK_1:
                 curve_type = Quadratic;
                 canvas.display();
-                break;                
+                break;
             case KeyEvent.VK_2:
                 curve_type = CubicBezier;
                 canvas.display();
@@ -448,7 +451,7 @@ public class curveGen extends JFrame implements GLEventListener, KeyListener, Mo
     // these event functions are not used for this assignment
     public void dispose(GLAutoDrawable glautodrawable) {
     }
-    
+
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
 
